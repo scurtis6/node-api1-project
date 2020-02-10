@@ -54,13 +54,23 @@ server.post('/api/users', (req, res) => {
         console.log(err)
         res.status(500).json({ errorMessage: 'There was an error while saving the user to the database' })
     })
-    // if (newUser.name && newUser.bio) {
-    //     Users.insert(newUser).then(user => {
-    //         res.status(201).json(user)
-    //     }).catch()
-    // }
 })
+
 // DELETE	/api/users/:id	Removes the user with the specified id and returns the deleted user.
+server.delete('/api/users/:id', (req, res) => {
+    const { id } = req.params;
+    Users.remove(id).then(removed => {
+        if(id) {
+            res.status(200).json(removed)
+        } else {
+            res.status(404).json({ message: 'The user with the specified ID does not exist.' })
+        }
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({ errorMessage: 'The user could not be removed' })
+    })
+})
+
 // PUT	/api/users/:id	Updates the user with the specified id using data from the request body. Returns the modified document, NOT the original.
 
 const port = 5000;
